@@ -4,6 +4,8 @@ const initialState = {
   userList: [],
   isLoading: false,
   selecteduser: {},
+  totalUsersCount: '',
+  someUsers: [],
   error: '',
 };
 
@@ -30,6 +32,50 @@ case Actions.USERS_REQUESTED:
     error: action.error || 'Something went wrong while fetching user list',
     isLoading: false,
   };
+
+  case Actions.USERS_COUNT_REQUESTED:
+    return {
+      ...state,
+      error: action.error || '',
+      totalUsersCount:   '',
+      isLoading: true,
+    };
+    case Actions.USERS_COUNT_RECEIVED:
+    return {
+      ...state,
+      error:  '',
+      totalUsersCount: action.payload.count || '',
+      isLoading: false,
+    };
+    case Actions.USERS_COUNT_ERROR:
+    return {
+      ...state,
+      error: action.error || 'Something went wrong while fetching users counts',
+      isLoading: false,
+    };
+
+    case Actions.SOME_USERS_REQUESTED:
+      return {
+        ...state,
+        error: action.error || '',
+        someUsers:   {},
+        isLoading: false,
+      };
+      case Actions.SOME_USERS_RECEIVED:
+      return {
+        ...state,
+        error:  '',
+        someUsers: action.payload.someUsers || {},
+        isLoading: false,
+      };
+      case Actions.SOME_USERS_ERROR:
+      return {
+        ...state,
+        error: action.error || 'Something went wrong while fetching some users ',
+        isLoading: false,
+      };
+
+
 default:
   return state;
 }

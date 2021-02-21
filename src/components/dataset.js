@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Pagination,Grid, Loader, Table, Label,Modal,Button, Header,Icon} from 'semantic-ui-react'
 // import DatasetList from './datasetList';
-import {getusers} from '../actions/socialAction'
+import {getusers, getSomeUsers} from '../actions/socialAction'
 import { connect } from 'react-redux';
 import _ from 'lodash'
 
@@ -19,7 +19,7 @@ class Dataset extends Component {
     console.log("delete is clicked",vehicle_id)
     console.log("page_number is clicked",page_number)
     this.setState({show_model: false  })
-    // this.props.dispatch(deleteVehicle(vehicle_id)).then(  ( ) =>  { this.props.dispatch(getSomeVehicleList(page_number)) ; }   );
+    // this.props.dispatch(deleteVehicle(vehicle_id)).then(  ( ) =>  { this.props.dispatch(getSomeUsers(page_number)) ; }   );
     // this.props.dispatch(deleteVehicle(vehicle_id));
     // this.props.dispatch(getSomeVehicleList(page_number));
   }
@@ -33,7 +33,7 @@ class Dataset extends Component {
   }
 
   componentDidMount(){
-    this.props.dispatch(getusers());
+    this.props.dispatch(getSomeUsers(1));
   }
 
   return_model = (item_id,page_number) => {
@@ -60,7 +60,7 @@ class Dataset extends Component {
   render() {
     // console.log("from dataset",this.state.tcount)
     // const { someVehicleList} = this.props;
-    const { error, isLoading, userList, totalVehicleCount, page_number} = this.props;
+    const { error, isLoading, someUsers, totalVehicleCount, page_number} = this.props;
     
     if (error) {
         return <div> Error: {error} </div>;
@@ -69,7 +69,7 @@ class Dataset extends Component {
       }
     else{
 
-      if(_.isEmpty(this.props.userList)  )
+      if(_.isEmpty(this.props.someUsers)  )
       return null;
 
       return (
@@ -102,7 +102,7 @@ class Dataset extends Component {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {userList.map( (item, index) => (
+                    {someUsers.map( (item, index) => (
                     <Table.Row>
                         <Table.Cell>{item.avatar}</Table.Cell>
                         <Table.Cell>{item.id}</Table.Cell>
@@ -129,9 +129,9 @@ class Dataset extends Component {
 
 
 const mapStateToProps = (state, props) => {
-    console.log("from dataset..............",state.socialReducers.userList)
+    console.log("from dataset..............",state.socialReducers.someUsers)
   return {
-    userList: state.socialReducers.userList,
+    someUsers: state.socialReducers.someUsers,
     error:  state.socialReducers.error,
     isLoading: state.socialReducers.isLoading
   };

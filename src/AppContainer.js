@@ -1,6 +1,6 @@
 import React from 'react';
 import {Loader,Grid, Pagination} from 'semantic-ui-react';
-import {getVehicleList, getVehicleListCount, getSomeVehicleList} from './actions/socialAction';
+import {  getUsersCount, getSomeUsers} from './actions/socialAction';
 import Dataset from './components/dataset'
 import Header from './components/header'
 import { connect } from 'react-redux';
@@ -15,20 +15,20 @@ class AppContainer extends React.Component {
     tcount: 10
   }
   
-//   componentDidMount() {
+  componentDidMount() {
  
-//     if(_.isEmpty(this.props.totalVehicleCount)  )
-//       this.props.dispatch(getVehicleListCount());
-//   }
+    if(_.isEmpty(this.props.totalUsersCount)  )
+      this.props.dispatch(getUsersCount());
+  }
 
   handlePaginationChange = (e, { activePage }) => {
  
-    // this.props.dispatch(getSomeVehicleList(activePage));
+    this.props.dispatch(getSomeUsers(activePage));
 
 }
   render() {
 
-    const { error, isLoading, totalVehicleCount} = this.props;
+    const { error, isLoading, totalUsersCount} = this.props;
     
     if (error) {
         return <div> Error: {error} </div>;
@@ -37,8 +37,8 @@ class AppContainer extends React.Component {
       }
     else {
 
-      // if(_.isEmpty(this.props.totalVehicleCount)  )
-      //   return null;
+      if(_.isEmpty(this.props.totalUsersCount)  )
+        return null;
   
       return (
           
@@ -59,8 +59,8 @@ class AppContainer extends React.Component {
                         // activePage = {this.state.activePage}
                         defaultActivePage = "1"
                         onPageChange = {this.handlePaginationChange}
-                        // totalPages= {this.props.totalVehicleCount}
-                        totalPages= {12}
+                        totalPages= {this.props.totalUsersCount/10}
+                        // totalPages= {12}
                       />
             </Grid.Row>
  
@@ -71,12 +71,11 @@ class AppContainer extends React.Component {
 }
 // style={{ height : '80vh' , overflow: 'auto'}}
 const mapStateToProps = (state, props) => {
-  // console.log("state.socialReducers.....................",state.socialReducers)
+  console.log("from appcontainer.....................",state.socialReducers.totalUsersCount)
   return {
-      t:"sddsf"
-    // totalVehicleCount: state.socialReducers,
-    // error:  state.socialReducers.error,
-    // isLoading: state.socialReducers.isLoading 
+    totalUsersCount: state.socialReducers.totalUsersCount,
+    error:  state.socialReducers.error,
+    isLoading: false
   };
 };
 
