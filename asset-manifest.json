@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/code_mobile_frontend/static/css/main.969081d6.chunk.css",
+    "main.js": "/code_mobile_frontend/static/js/main.6396f5fe.chunk.js",
+    "main.js.map": "/code_mobile_frontend/static/js/main.6396f5fe.chunk.js.map",
+    "runtime-main.js": "/code_mobile_frontend/static/js/runtime-main.29184a32.js",
+    "runtime-main.js.map": "/code_mobile_frontend/static/js/runtime-main.29184a32.js.map",
+    "static/css/2.ede262e8.chunk.css": "/code_mobile_frontend/static/css/2.ede262e8.chunk.css",
+    "static/js/2.9e590828.chunk.js": "/code_mobile_frontend/static/js/2.9e590828.chunk.js",
+    "static/js/2.9e590828.chunk.js.map": "/code_mobile_frontend/static/js/2.9e590828.chunk.js.map",
+    "static/js/3.d7eb4ce0.chunk.js": "/code_mobile_frontend/static/js/3.d7eb4ce0.chunk.js",
+    "static/js/3.d7eb4ce0.chunk.js.map": "/code_mobile_frontend/static/js/3.d7eb4ce0.chunk.js.map",
+    "index.html": "/code_mobile_frontend/index.html",
+    "static/css/2.ede262e8.chunk.css.map": "/code_mobile_frontend/static/css/2.ede262e8.chunk.css.map",
+    "static/css/main.969081d6.chunk.css.map": "/code_mobile_frontend/static/css/main.969081d6.chunk.css.map",
+    "static/js/2.9e590828.chunk.js.LICENSE.txt": "/code_mobile_frontend/static/js/2.9e590828.chunk.js.LICENSE.txt",
+    "static/media/semantic.min.css": "/code_mobile_frontend/static/media/outline-icons.ddae9b1b.woff"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.29184a32.js",
+    "static/css/2.ede262e8.chunk.css",
+    "static/js/2.9e590828.chunk.js",
+    "static/css/main.969081d6.chunk.css",
+    "static/js/main.6396f5fe.chunk.js"
+  ]
+}
