@@ -1,66 +1,65 @@
 import React, { Component } from 'react'
-import { Pagination,Grid, Loader, Table, Label,Modal,Button, Header,Icon} from 'semantic-ui-react'
-// import DatasetList from './datasetList';
-import {getusers, getSomeUsers} from '../actions/socialAction'
+import { Pagination,Grid, Image, Loader, Table, Label,Modal,Button, Header,Icon} from 'semantic-ui-react'
+import {getusers, getSomeUsers, getUserFriends, getUserFofF} from '../actions/socialAction'
+import { trashModal } from './modals/trashModal'
+import {friendshModal} from './modals/friendsModal'
+import { fofFModal} from './modals/fofFriends'
 import { connect } from 'react-redux';
-import _ from 'lodash'
+import _, { truncate } from 'lodash'
+import avatar_images from './extra/avatar_images'
+import '../App.css'
 
 class Dataset extends Component {
     state = {
  
         data:[],
         page_number:1,
-        show_model:false,
-        item_id:''
+        show_trash_model:false,
+        show_foff_model:false,
+        show_friends_model:false,
+        userFriends:[],
+        selected_user:'',
+        userFofF:[]
       
       }
 
-  handleDeleteRow = (vehicle_id,page_number) => {
-    console.log("delete is clicked",vehicle_id)
+  handleDeleteRow = (user_id,page_number) => {
+    console.log("delete is clicked",user_id)
     console.log("page_number is clicked",page_number)
-    this.setState({show_model: false  })
-    // this.props.dispatch(deleteVehicle(vehicle_id)).then(  ( ) =>  { this.props.dispatch(getSomeUsers(page_number)) ; }   );
-    // this.props.dispatch(deleteVehicle(vehicle_id));
-    // this.props.dispatch(getSomeVehicleList(page_number));
+    this.setState({show_trash_model: false  })
+    // this.props.dispatch(deleteUser(user_id)).then(  ( ) =>  { this.props.dispatch(getSomeUsers(page_number)) ; }   );
   }
 
-  handleModel = (value) =>{
-    this.setState({show_model: value  })
+  setActionId = (item, model_to_show, modalState) => {
+    this.setState({ selected_user: item, [`${model_to_show}`]: modalState  })
+    if(model_to_show=='show_friends_model'){
+      console.log('clicked userfriends................')
+      this.props.dispatch(getUserFriends(item.id)).then(  ( ) =>  { 
+        this.setState({ userFriends: this.props.userFriends}) 
+      });
+    }
+
+    else if(model_to_show=='show_foff_model'){
+      console.log("from dispatch fofffriends............",this.props.userFofF)
+      this.props.dispatch(getUserFofF(item.id)).then(  ( ) =>  { 
+        this.setState({ userFofF: this.props.userFofF}) 
+      });
+    }
+
   }
 
-  setIdToDelete = (item_id) => {
-    this.setState({ item_id: item_id, show_model: true  })
+  closeModal = (model_to_close) => {
+    this.setState({ [`${model_to_close}`]: false  })
   }
 
   componentDidMount(){
     this.props.dispatch(getSomeUsers(1));
   }
-
-  return_model = (item_id,page_number) => {
-    const model_ui =   <Modal  open={this.state.show_model} basic size='small'>
-    <Header icon='archive' content='Archive Vehicle' />
-    <Modal.Content>
-      <p>
-        Are you sure you want to unlist this item ?
-      </p>
-    </Modal.Content>
-    <Modal.Actions>
-      <Button basic color='red' inverted  onClick={() => this.handleModel(false)}>
-        <Icon name='remove' /> No
-      </Button>
-      <Button color='green' inverted onClick={() => this.handleDeleteRow(item_id,page_number)} >
-        <Icon name='checkmark' /> Yes
-      </Button>
-    </Modal.Actions>
-  </Modal>
-
-  return model_ui
-  }
   
   render() {
     // console.log("from dataset",this.state.tcount)
     // const { someVehicleList} = this.props;
-    const { error, isLoading, someUsers, totalVehicleCount, page_number} = this.props;
+    const { error, isLoading, someUsers, userFriends, page_number} = this.props;
     
     if (error) {
         return <div> Error: {error} </div>;
@@ -77,42 +76,64 @@ class Dataset extends Component {
 
         <div>
             {(() => {
-              if (this.state.show_model) {
+              if (this.state.show_trash_model) {
                 return (
-                  this.return_model(this.state.item_id, page_number)
+                  trashModal(this.closeModal, this.state, this.handleDeleteRow)
                 )
               }   
+              else if (this.state.show_foff_model) {
+                return (
+                  fofFModal(this.closeModal, this.state)
+                )
+              } 
+              else if (this.state.show_friends_model) {
+                return (
+                  friendshModal( this.closeModal, this.state)
+                )
+              } 
+              else{
+                return null
+              }
+
             })()}
           </div>
 
         <div  >
-            <Table celled   selectable inverted>
+            <Table celled   selectable   color='green'>
                 <Label color='green' ribbon>Social Users Table</Label>
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell>avatar</Table.HeaderCell>
-                        <Table.HeaderCell>id</Table.HeaderCell>
-                        <Table.HeaderCell>userid</Table.HeaderCell>
-                        <Table.HeaderCell>name</Table.HeaderCell>
-                        <Table.HeaderCell>email</Table.HeaderCell>
-                        <Table.HeaderCell>view</Table.HeaderCell>
-                        <Table.HeaderCell>Delete</Table.HeaderCell>
-
-                        {/* <Table.HeaderCell>Notes</Table.HeaderCell> */}
+                        <Table.HeaderCell>AVATAR</Table.HeaderCell>
+                        <Table.HeaderCell>ID</Table.HeaderCell>
+                        <Table.HeaderCell>USER ID</Table.HeaderCell>
+                        <Table.HeaderCell>USER NAME</Table.HeaderCell>
+                        <Table.HeaderCell>USER EMAIL</Table.HeaderCell>
+                        <Table.HeaderCell>USER FRIENDS</Table.HeaderCell>
+                        <Table.HeaderCell>FRIENDS OF FRIENDS</Table.HeaderCell>
+                        <Table.HeaderCell>REMOVE</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
                     {someUsers.map( (item, index) => (
                     <Table.Row>
-                        <Table.Cell>{item.avatar}</Table.Cell>
+          <Header as='h4' image>
+            <Image src={avatar_images.AVATAR[item.avatar]} rounded size='mini' />
+            <Header.Content>
+              {item.name}
+              <Header.Subheader>Id: {item.id}</Header.Subheader>
+            </Header.Content>
+          </Header>
                         <Table.Cell>{item.id}</Table.Cell>
                         <Table.Cell>{item.userid}</Table.Cell>
                         <Table.Cell>{item.name}</Table.Cell>
                         <Table.Cell>{item.email}</Table.Cell>
-                        <Table.Cell textAlign="center" selectable style={{color:'green'}} onClick={() => this.setIdToDelete(item.id)}>
-                        <i aria-hidden="true"  color='red' class="edit alternate icon"></i>
+                        <Table.Cell className='action_items' textAlign="center" selectable style={{color:'green'}} onClick={() => this.setActionId(item,'show_friends_model',true)}>
+                        <i aria-hidden="true"  color='red' class="facebook f alternate icon"></i>
                         </Table.Cell>
-                        <Table.Cell textAlign="center" selectable style={{color:'red'}} onClick={() => this.setIdToDelete(item.id)}>
+                        <Table.Cell className='action_items' textAlign="center" selectable style={{color:'green'}} onClick={() => this.setActionId(item,'show_foff_model',true)}>
+                        <i aria-hidden="true"  color='red' class="users alternate icon"></i>
+                        </Table.Cell>  
+                        <Table.Cell className='action_items' textAlign="center" selectable style={{color:'red'}} onClick={() => this.setActionId(item,'show_trash_model',true)}>
                         <i aria-hidden="true"  color='red' class="trash alternate icon"></i>
                         </Table.Cell>
                     </Table.Row>
@@ -129,11 +150,14 @@ class Dataset extends Component {
 
 
 const mapStateToProps = (state, props) => {
-    console.log("from dataset..............",state.socialReducers.someUsers)
+  // if(!_.isEmpty(state.socialReducers.userFofF))
+      // console.log("from dataset..............",state.socialReducers.userFofF)
   return {
     someUsers: state.socialReducers.someUsers,
     error:  state.socialReducers.error,
-    isLoading: state.socialReducers.isLoading
+    isLoading: state.socialReducers.isLoading,
+    userFriends: state.socialReducers.userFriends,
+    userFofF: state.socialReducers.userFofF
   };
 };
 

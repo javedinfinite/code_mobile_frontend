@@ -1,6 +1,7 @@
  
 .menu{
   width: 100%;
+  /* border-radius: 6px !important; */
 }
 .card_class:hover {
   box-shadow: 0 0 11px rgb(14, 12, 11) !important; 
@@ -8,3 +9,14 @@
 .card_class{
   background-color: #c1e7b6 !important;
 }
+
+ 
+.segment{
+  width: 100%;
+}
+
+.action_items:hover {
+  cursor: pointer;
+}
+
+ 

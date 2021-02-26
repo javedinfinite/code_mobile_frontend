@@ -48,9 +48,9 @@ class AppContainer extends React.Component {
               <Header/>
             </Grid.Row>
 
-            <Grid.Row style={{ height : '85vh' , overflow: 'auto'}} >
+            <Grid.Row style={{ height : '80vh' , overflow: 'auto'}} >
                
-                  <Dataset  />
+                  <Dataset page_number={this.state.activePage} />
                
             </Grid.Row>
             
@@ -69,7 +69,6 @@ class AppContainer extends React.Component {
     }
   }
 }
-// style={{ height : '80vh' , overflow: 'auto'}}
 const mapStateToProps = (state, props) => {
   console.log("from appcontainer.....................",state.socialReducers.totalUsersCount)
   return {

@@ -6,6 +6,8 @@ const initialState = {
   selecteduser: {},
   totalUsersCount: '',
   someUsers: [],
+  userFriends: [],
+  userFofF: [],
   error: '',
 };
 
@@ -74,6 +76,51 @@ case Actions.USERS_REQUESTED:
         error: action.error || 'Something went wrong while fetching some users ',
         isLoading: false,
       };
+
+
+      case Actions.USERS_FRIENDS_REQUESTED:
+        return {
+          ...state,
+          error: action.error || '',
+          userFriends:   {},
+          isLoading: false,
+        };
+        case Actions.USERS_FRIENDS_RECEIVED:
+        return {
+          ...state,
+          error:  '',
+          userFriends: action.payload.userFriends || {},
+          isLoading: false,
+        };
+        case Actions.USERS_FRIENDS_ERROR:
+        return {
+          ...state,
+          error: action.error || 'Something went wrong while fetching some users ',
+          isLoading: false,
+        };
+
+      
+
+        case Actions.USER_FOFF_REQUESTED:
+          return {
+            ...state,
+            error: action.error || '',
+            userFofF:   {},
+            isLoading: false,
+          };
+          case Actions.USER_FOFF_RECEIVED:
+          return {
+            ...state,
+            error:  '',
+            userFofF: action.payload.userFofF || {},
+            isLoading: false,
+          };
+          case Actions.USER_FOFF_ERROR:
+          return {
+            ...state,
+            error: action.error || 'Something went wrong while fetching FofF ',
+            isLoading: false,
+          };
 
 
 default:
